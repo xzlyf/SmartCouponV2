@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">捡漏王2.0</string>
+    <!--%n 代表当前为第几参数，使strings.xml中的位置与format参数的位置对应；-->
+    <!--$s代表为字符串数值；$d代表为整数数值；$f代表为浮点型数值。-->
+    <!--如：%1$d代表第一个参数，数值类型为整数。-->
+    <string name="current_string_1">领%1$d元券</string>
+</resources>
