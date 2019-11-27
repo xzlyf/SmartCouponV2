@@ -1,6 +1,7 @@
 package com.xz.jlw2;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
 import com.xz.base.BaseActivity;
+import com.xz.base.OnItemClickListener;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.entity.CommEntity;

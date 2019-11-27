@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
         CommEntity entity = mList.get(position);
         //加载主图
         Glide.with(mContext).load(entity.getImgUrl()).into(viewHolder.mainPic);
-        viewHolder.goodsQuan.setText("领"+entity.getActMoney()+"元券");
+        viewHolder.goodsQuan.setText("领" + entity.getActMoney() + "元券");
         viewHolder.goodsTitle.setText(entity.getGoodsName());
         viewHolder.goodsBefore.setText(entity.getGoodsPrice() + "￥");
         viewHolder.goodsBefore.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -53,10 +54,25 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
         TextView goodsNew;
         @BindView(R.id.goods_quan)
         TextView goodsQuan;
+        @BindView(R.id.item_1)
+        TextView item_1;
+        @BindView(R.id.item_2)
+        TextView item_2;
+        @BindView(R.id.item_3)
+        TextView item_3;
+        @BindView(R.id.layout_menu)
+        FrameLayout layoutMenu;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            });
         }
     }
 

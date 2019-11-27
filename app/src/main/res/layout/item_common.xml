@@ -1,67 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_yuanxin"
-    android:padding="@dimen/dp_6">
+    android:background="@drawable/bg_yuanjuxing">
 
-    <ImageView
-        android:id="@+id/main_pic"
-        android:layout_width="@dimen/dp_100"
-        android:layout_height="@dimen/dp_100"
-        android:background="@color/gray1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/goods_title"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:ellipsize="end"
-        android:lines="2"
-        android:maxEms="12"
-        android:text="联想笔记本电脑通用键盘是的阿斯顿3333333333333保护贴膜祖传贴膜"
-        android:textColor="@color/primary_text"
-        android:textSize="@dimen/sp_14"
-        app:layout_constraintLeft_toRightOf="@+id/main_pic"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="@dimen/dp_6">
+
+        <ImageView
+            android:id="@+id/main_pic"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:background="@color/gray1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/goods_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxEms="12"
+            android:text="联想笔记本电脑通用键盘是的阿斯顿3333333333333保护贴膜祖传贴膜"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toRightOf="@+id/main_pic"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/goods_before"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_8"
-        android:text="35￥"
-        app:layout_constraintLeft_toRightOf="@+id/main_pic"
-        app:layout_constraintTop_toBottomOf="@id/goods_title" />
+        <TextView
+            android:id="@+id/goods_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="35￥"
+            app:layout_constraintLeft_toRightOf="@+id/main_pic"
+            app:layout_constraintTop_toBottomOf="@id/goods_title" />
 
-    <TextView
-        android:id="@+id/goods_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_8"
-        android:text="35￥"
-        android:textColor="@color/red"
-        android:textSize="@dimen/sp_16"
-        app:layout_constraintLeft_toRightOf="@+id/main_pic"
-        app:layout_constraintTop_toBottomOf="@id/goods_before" />
+        <TextView
+            android:id="@+id/goods_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="35￥"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toRightOf="@+id/main_pic"
+            app:layout_constraintTop_toBottomOf="@id/goods_before" />
 
-    <TextView
-        android:id="@+id/goods_quan"
-        android:layout_width="@dimen/dp_90"
-        android:layout_height="@dimen/dp_30"
-        android:background="@drawable/quan"
-        android:gravity="center"
-        android:text="领20元券"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/goods_quan"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/quan"
+            android:gravity="center"
+            android:text="领20元券"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/layout_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#6D181818"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_1"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_yuanxin"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="收藏"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/item_2"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_yuanxin"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="关注"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/item_3"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/btn_yuanxin"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="过滤"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>
