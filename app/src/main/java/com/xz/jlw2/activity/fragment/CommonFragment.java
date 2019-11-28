@@ -1,6 +1,7 @@
-package com.xz.jlw2;
+package com.xz.jlw2.activity.fragment;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
-import com.xz.base.BaseActivity;
-import com.xz.base.OnItemClickListener;
+import com.xz.base.BaseFragment;
+import com.xz.jlw2.R;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.entity.CommEntity;
@@ -27,37 +28,35 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class CommonFragment extends BaseFragment {
 
-
-    @BindView(R.id.common_recycler)
+    private CommonAdapter commonAdapter;
     RecyclerView commonRecycler;
 
     @Override
-    public boolean homeAsUpEnabled() {
-        return false;
+    protected int getLayout() {
+        return R.layout.fragment_common;
     }
 
     @Override
-    public int getLayoutResource() {
-        return R.layout.activity_main;
+    protected void initView(View rootView) {
+        commonRecycler = rootView.findViewById(R.id.common_recycler);
     }
 
     @Override
-    public void initData() {
+    protected void initDate(Context mContext) {
+        Log.d(TAG, "initDate: ");
         netGetCommon();
     }
 
-    private CommonAdapter commonAdapter;
 
     /**
      * 获取普通商品数据
      */
     private void netGetCommon() {
-        commonAdapter = new CommonAdapter(this);
-        commonRecycler.setLayoutManager(new LinearLayoutManager(this));
+        commonAdapter = new CommonAdapter(mContext);
+        commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         commonRecycler.setAdapter(commonAdapter);
         commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
         Map<String, Object> params = new HashMap<>();
@@ -65,7 +64,7 @@ public class MainActivity extends BaseActivity {
         params.put("page", 1);
         params.put("pagesize", 20);
         params.put("sort", 7);
-        OkHttpClientManager.getAsyn(this, Local.BASE_URL + Local.INDEX, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.getAsyn(mContext, Local.BASE_URL + Local.INDEX, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 Logger.e("请求失败：" + request.url());
@@ -99,5 +98,4 @@ public class MainActivity extends BaseActivity {
 
         }, params, true);
     }
-
 }

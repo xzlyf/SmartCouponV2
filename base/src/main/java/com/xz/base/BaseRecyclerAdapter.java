@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
+    protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected LayoutInflater mInflater;
     protected List<T> mList;
