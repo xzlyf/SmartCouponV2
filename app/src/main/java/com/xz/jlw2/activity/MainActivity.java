@@ -1,49 +1,49 @@
 package com.xz.jlw2.activity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
-import com.squareup.okhttp.Request;
 import com.xz.base.BaseActivity;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.fragment.CommonFragment;
-import com.xz.jlw2.adapter.CommonAdapter;
-import com.xz.jlw2.constant.Local;
-import com.xz.jlw2.entity.CommEntity;
-import com.xz.utils.SpacesItemDecorationVertical;
-import com.xz.utils.network.OkHttpClientManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.xz.jlw2.adapter.TitleFragmentPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
-
-    private Fragment[] fragments;
-    @BindView(R.id.home_container)
-    FrameLayout homeContainer;
-    @BindView(R.id.tabs)
-    TabLayout tabs;
+    private String[] titles = new String[]{
+            "主页",
+            "发现",
+            "购物车",
+            "我的"};
+    private final int[] mTabRes = new int[]{
+            R.mipmap.ic_home,
+            R.mipmap.ic_news,
+            R.mipmap.ic_car,
+            R.mipmap.ic_my};
+    private final int[] mTabResPressed = new int[]{
+            R.mipmap.ic_home_pre,
+            R.mipmap.ic_news_pre,
+            R.mipmap.ic_car_pre,
+            R.mipmap.ic_my_pre};
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
 
     @Override
     public boolean homeAsUpEnabled() {
@@ -57,27 +57,56 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        fragments = DataGenerator.getFragments();
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        initTab();
+    }
+
+    /**
+     * 初始化tab
+     */
+    private void initTab() {
+
+        List<Fragment> fragments = new ArrayList<>();
+        //加入布局
+        fragments.add(new CommonFragment());
+        fragments.add(new CommonFragment());
+        fragments.add(new CommonFragment());
+        fragments.add(new CommonFragment());
+
+
+        //设置适配器
+        TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getSupportFragmentManager(), fragments, titles);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        //默认tab状态
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            switch (i) {
+                case 0:
+                    tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabResPressed[0]));
+                    break;
+                case 1:
+                    tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabRes[1]));
+                    break;
+                case 2:
+                    tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabRes[2]));
+                    break;
+                case 3:
+                    tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabRes[3]));
+                    break;
+            }
+        }
+
+        //选中tab状态
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                onTabItemSelected(tab.getPosition());
-                for (int i = 0; i < tabs.getTabCount(); i++) {
-                    View view = tabs.getTabAt(i).getCustomView();
-                    ImageView icon = view.findViewById(R.id.tab_content_image);
-                    TextView text = view.findViewById(R.id.tab_content_text);
+                //改变Tab 状态
+                for (int i = 0; i < tabLayout.getTabCount(); i++) {
                     if (i == tab.getPosition()) {
-                        // 选中状态
-                        icon.setImageResource(DataGenerator.mTabResPressed[i]);
-                        text.setTextColor(getResources().getColor(android.R.color.black));
+                        tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabResPressed[i]));
                     } else {
-                        // 未选中状态
-                        icon.setImageResource(DataGenerator.mTabRes[i]);
-                        text.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                        tabLayout.getTabAt(i).setIcon(getResources().getDrawable(mTabRes[i]));
                     }
-
                 }
-
             }
 
             @Override
@@ -91,71 +120,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        // 提供自定义的布局添加Tab
-        for (int i = 0; i < 4; i++) {
-            tabs.addTab(tabs.newTab().setCustomView(DataGenerator.getTabView(this, i)));
-        }
-
     }
 
-    private void onTabItemSelected(int position) {
-        Fragment fragment = null;
-        switch (position) {
-            case 0:
-                fragment = fragments[0];
-                break;
-            case 1:
-                fragment = fragments[1];
-                break;
-            case 2:
-                fragment = fragments[2];
-                break;
-            case 3:
-                fragment = fragments[3];
-                break;
-        }
-        if (fragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.home_container, fragment).commit();
-        }
-    }
-
-
-    static class DataGenerator {
-        static final int[] mTabRes = new int[]{
-                R.mipmap.ic_home,
-                R.mipmap.ic_news,
-                R.mipmap.ic_car,
-                R.mipmap.ic_my};
-        static final int[] mTabResPressed = new int[]{
-                R.mipmap.ic_home_pre,
-                R.mipmap.ic_news_pre,
-                R.mipmap.ic_car_pre,
-                R.mipmap.ic_my_pre};
-        static final String[] mTabTitle = new String[]{"首页", "发现", "购物车", "我的"};
-
-        static Fragment[] getFragments() {
-            Fragment fragments[] = new Fragment[4];
-            fragments[0] = new CommonFragment();
-            fragments[1] = new CommonFragment();
-            fragments[2] = new CommonFragment();
-            fragments[3] = new CommonFragment();
-            return fragments;
-        }
-
-        /**
-         * 获取Tab 显示的内容
-         *
-         * @param context
-         * @param position
-         * @return
-         */
-        static View getTabView(Context context, int position) {
-            View view = LayoutInflater.from(context).inflate(R.layout.home_tab_content, null);
-            ImageView tabIcon = view.findViewById(R.id.tab_content_image);
-            tabIcon.setImageResource(DataGenerator.mTabRes[position]);
-            TextView tabText = view.findViewById(R.id.tab_content_text);
-            tabText.setText(mTabTitle[position]);
-            return view;
-        }
-    }
 }

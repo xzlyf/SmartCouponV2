@@ -1,9 +1,9 @@
 package com.xz.jlw2.activity.fragment;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +27,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-
 public class CommonFragment extends BaseFragment {
 
     private CommonAdapter commonAdapter;
-    RecyclerView commonRecycler;
+    private List<CommEntity> list = new ArrayList<>();
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        commonAdapter = new CommonAdapter(mContext);
+        //只加载一次数据，除非退出否则不再刷新数据
+        netGetCommon();
+    }
 
     @Override
     protected int getLayout() {
@@ -41,13 +47,15 @@ public class CommonFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
-        commonRecycler = rootView.findViewById(R.id.common_recycler);
+        RecyclerView commonRecycler = rootView.findViewById(R.id.common_recycler);
+        commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        commonRecycler.setAdapter(commonAdapter);
+        commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
+
     }
 
     @Override
     protected void initDate(Context mContext) {
-        Log.d(TAG, "initDate: ");
-        netGetCommon();
     }
 
 
@@ -55,10 +63,7 @@ public class CommonFragment extends BaseFragment {
      * 获取普通商品数据
      */
     private void netGetCommon() {
-        commonAdapter = new CommonAdapter(mContext);
-        commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        commonRecycler.setAdapter(commonAdapter);
-        commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
+
         Map<String, Object> params = new HashMap<>();
         params.put("appkey", Local.APIKEY);
         params.put("page", 1);
@@ -78,8 +83,8 @@ public class CommonFragment extends BaseFragment {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getString("error").equals("0")) {
                         JSONArray obj2 = obj.getJSONArray("data");
-                        List<CommEntity> list = new ArrayList<>();
                         Gson gson = new Gson();
+                        list.clear();
                         for (int i = 0; i < obj2.length(); i++) {
                             list.add(gson.fromJson(obj2.getJSONObject(i).toString(), CommEntity.class));
                         }
