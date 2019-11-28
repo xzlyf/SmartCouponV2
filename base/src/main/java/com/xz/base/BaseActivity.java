@@ -73,7 +73,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      * 申请权限
      */
     public void initPermission() {
-        Logger.d(Local.flag);
         if (Local.flag == -1) {
             Local.flag = 0;
 
