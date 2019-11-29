@@ -17,6 +17,7 @@ import com.xz.base.BaseActivity;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.fragment.CommonFragment;
 import com.xz.jlw2.adapter.TitleFragmentPagerAdapter;
+import com.xz.jlw2.custom.SlideViewPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity {
             R.mipmap.ic_car_pre,
             R.mipmap.ic_my_pre};
     @BindView(R.id.view_pager)
-    ViewPager viewPager;
+    SlideViewPage viewPager;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
@@ -68,14 +69,15 @@ public class MainActivity extends BaseActivity {
         List<Fragment> fragments = new ArrayList<>();
         //加入布局
         fragments.add(new CommonFragment());
-        fragments.add(new CommonFragment());
-        fragments.add(new CommonFragment());
-        fragments.add(new CommonFragment());
+        fragments.add(new Fragment());
+        fragments.add(new Fragment());
+        fragments.add(new Fragment());
 
 
         //设置适配器
         TitleFragmentPagerAdapter adapter = new TitleFragmentPagerAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(adapter);
+        viewPager.canSlide(false);//设置不能左右滑动
         tabLayout.setupWithViewPager(viewPager);
         //默认tab状态
         for (int i = 0; i < tabLayout.getTabCount(); i++) {

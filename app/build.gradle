@@ -48,4 +48,6 @@ dependencies {
     implementation 'com.squareup.okhttp:okhttp:2.4.0'
     //logger
     implementation 'com.orhanobut:logger:1.15'
+    //圆形图片view
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }

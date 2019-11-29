@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.orhanobut.logger.Logger;
 import com.xz.base.BaseRecyclerAdapter;
 import com.xz.base.BaseRecyclerViewHolder;
 import com.xz.base.utils.ToastUtil;
@@ -25,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
-    private final String TAG = getClass().getName();
     private ViewHolder lastViewHolder;
 
     public CommonAdapter(Context context) {
