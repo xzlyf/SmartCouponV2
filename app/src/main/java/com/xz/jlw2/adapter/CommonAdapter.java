@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
@@ -109,7 +110,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
         @BindView(R.id.item_3)
         TextView item_3;//自定义功能
         @BindView(R.id.layout_menu)
-        FrameLayout layoutMenu;
+        CardView layoutMenu;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

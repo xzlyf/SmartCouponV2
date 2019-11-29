@@ -50,4 +50,7 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
     //圆形图片view
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
+
 }

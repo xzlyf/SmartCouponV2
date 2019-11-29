@@ -4,4 +4,15 @@
     <!--$s代表为字符串数值；$d代表为整数数值；$f代表为浮点型数值。-->
     <!--如：%1$d代表第一个参数，数值类型为整数。-->
     <string name="current_string_1">领%1$d元券</string>
+
+    <string name="ERROR_CODE_1">网络请求失败，请稍后重试0x001</string>
+    <string name="ERROR_CODE_2">网络请求失败，请稍后重试0x002</string>
+    <string name="ERROR_CODE_3">网络请求失败，请稍后重试0x003</string>
+    <string name="ERROR_CODE_4">网络请求失败，请稍后重试0x004</string>
+    <string name="ERROR_CODE_5">网络请求失败，请稍后重试0x005</string>
+    <string name="ERROR_CODE_6">网络请求失败，请稍后重试0x006</string>
+    <string name="ERROR_CODE_7">网络请求失败，请稍后重试0x007</string>
+    <string name="ERROR_CODE_8">网络请求失败，请稍后重试0x008</string>
+    <string name="ERROR_CODE_9">网络请求失败，请稍后重试0x009</string>
+    <string name="ERROR_CODE_10">网络请求失败，请稍后重试0x011</string>
 </resources>

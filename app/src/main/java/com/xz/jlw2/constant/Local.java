@@ -18,5 +18,11 @@ public class Local {
     public static final String GETITEMTKLLINK = "GetItemTklLink";//单品转链
     public static final String GOODSACTIVITY = "goods_activity";//双11预售
 
+    //大淘客key
+    public static final String APIKEY_DTK = "5d24967e3c4d6";//apikey
+    public static final String VERSION_DTK = "v1.0.1";//接口版本
+    public static final String APP_SECRET_DTK = "e25f590cc656794c86f7da47ea1ba545";//sign
+    //大淘客接口
+    public static final String HOTWORD = "https://openapi.dataoke.com/api/category/get-top100";//热词排行
 
 }
