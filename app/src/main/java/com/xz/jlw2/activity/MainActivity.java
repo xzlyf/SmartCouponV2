@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.xz.base.BaseActivity;
 import com.xz.jlw2.R;
+import com.xz.jlw2.activity.fragment.CartFragment;
 import com.xz.jlw2.activity.fragment.CommonFragment;
 import com.xz.jlw2.adapter.TitleFragmentPagerAdapter;
 import com.xz.jlw2.custom.SlideViewPage;
@@ -70,7 +71,7 @@ public class MainActivity extends BaseActivity {
         //加入布局
         fragments.add(new CommonFragment());
         fragments.add(new Fragment());
-        fragments.add(new Fragment());
+        fragments.add(new CartFragment());
         fragments.add(new Fragment());
 
 
