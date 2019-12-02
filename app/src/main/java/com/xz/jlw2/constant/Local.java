@@ -25,4 +25,11 @@ public class Local {
     //大淘客接口
     public static final String HOTWORD = "https://openapi.dataoke.com/api/category/get-top100";//热词排行
 
+
+
+    //handler数值
+    public static final int CODE_1 = 999;//上拉加载
+    public static final int CODE_2 = 998;//自定义功能1
+    public static final int CODE_3 = 997;//自定义功能1
+    public static final int CODE_4 = 996;//自定义功能1
 }

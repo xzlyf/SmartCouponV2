@@ -1,6 +1,8 @@
 package com.xz.jlw2.activity.fragment;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,13 +54,54 @@ public class CommonFragment extends BaseFragment {
     private List<ClassifyEntity> classifyList = new ArrayList<>();
     private HotWordAdapter hotWordAdapter;
     private List<String> hotList = new ArrayList<>();
-
+    private int page = 1;//默认商品页数
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case Local.CODE_1:
+                        //加载商品数据
+                        netGetCommon(++page);
+                        break;
+                }
+            }
+        };
         commonAdapter = new CommonAdapter(mContext);
         classifyAdapter = new ClassifyAdapter(mContext);
         hotWordAdapter = new HotWordAdapter(mContext);
+        classifyAdapter.setOnItemClickListener(new OnItemClickListener<ClassifyEntity>() {
+            @Override
+            public void onItemClick(View view, int position, ClassifyEntity model) {
+                sToast("测试功能:" + model.getName());
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position, ClassifyEntity model) {
+                sToast("长按测试功能:" + model.getName());
+
+            }
+        });
+
+        commonAdapter.setOnItemClickListener(new OnItemClickListener<CommEntity>() {
+            @Override
+            public void onItemClick(View view, int position, CommEntity model) {
+                sToast("商品点击");
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position, CommEntity model) {
+                sToast("长按商品");
+
+            }
+        });
+        commonAdapter.setHandler(handler);
+
+
+
         /*
             只加载一次数据，除非退出否则不再刷新数据
          */
@@ -67,7 +110,7 @@ public class CommonFragment extends BaseFragment {
         //获取搜索热词
         netGetHotWord();
         //加载商品数据
-        netGetCommon();
+        netGetCommon(page);
         //加载banner
         netGetBanner();
 
@@ -110,18 +153,7 @@ public class CommonFragment extends BaseFragment {
         classRecycler.setAdapter(classifyAdapter);
         //SnapHelper snapHelper = new LinearSnapHelper();
         //snapHelper.attachToRecyclerView(classRecycler);
-        classifyAdapter.setOnItemClickListener(new OnItemClickListener<ClassifyEntity>() {
-            @Override
-            public void onItemClick(View view, int position, ClassifyEntity model) {
-                sToast("测试功能:" + model.getName());
-            }
 
-            @Override
-            public void onItemLongClick(View view, int position, ClassifyEntity model) {
-                sToast("长按测试功能:" + model.getName());
-
-            }
-        });
         //商品列表
         RecyclerView commonRecycler = rootView.findViewById(R.id.common_recycler);
         commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
@@ -222,12 +254,12 @@ public class CommonFragment extends BaseFragment {
     /**
      * 获取普通商品数据
      */
-    private void netGetCommon() {
+    private void netGetCommon(int page) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("appkey", Local.APIKEY);
-        params.put("page", 1);
-        params.put("pagesize", 20);
+        params.put("page", page);
+        params.put("pagesize", 50);
         params.put("sort", 7);
         OkHttpClientManager.getAsyn(mContext, Local.BASE_URL + Local.INDEX, new OkHttpClientManager.ResultCallback<String>() {
             @Override
