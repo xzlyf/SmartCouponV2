@@ -71,7 +71,11 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             ViewHolder viewHolder = (ViewHolder) holder;
             CommEntity entity = mList.get(position);
             //加载主图
-            Glide.with(mContext).load(entity.getImgUrl()).into(viewHolder.mainPic);
+            Glide.with(mContext)
+                    .load(entity.getImgUrl())
+                    .override(100,100)
+                    .thumbnail(0.1f)//缩略图
+                    .into(viewHolder.mainPic);
             viewHolder.goodsQuan.setText("领" + entity.getActMoney() + "元券");
             viewHolder.goodsTitle.setText(entity.getGoodsName());
             viewHolder.goodsBefore.setText(entity.getGoodsPrice() + "￥");
@@ -85,8 +89,10 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
                     ((FooterHolder) holder).itemView.setVisibility(View.GONE);
                     break;
                 case 0:
-                    ((FooterHolder) holder).refreshTips.setText("加载更多...");
-                    ((FooterHolder) holder).itemView.setEnabled(true);
+                    if (mList.size() > 1) {
+                        ((FooterHolder) holder).refreshTips.setText("加载更多...");
+                        ((FooterHolder) holder).itemView.setEnabled(true);
+                    }
                     break;
             }
 
@@ -247,7 +253,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
                 return;
             }
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(v, 0, null);
+                mOnItemClickListener.onItemClick(v, getLayoutPosition(), mList.get(getLayoutPosition()));
             }
         }
 

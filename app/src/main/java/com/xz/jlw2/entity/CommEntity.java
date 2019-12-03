@@ -3,6 +3,7 @@ package com.xz.jlw2.entity;
 public class CommEntity {
 
 
+
     private String ID;
     private String GoodsId;
     private String GoodsName;
@@ -21,6 +22,7 @@ public class CommEntity {
     private String Coupon_Count;
     private String Coupon_SaleCount;
     private String ly;
+    private String LongGoodsName;
     private String MarketImage;
     private String ActivityType;
     private String OrderCount;
@@ -28,6 +30,11 @@ public class CommEntity {
     private String AllDayCount;
     private String SellerId;
     private String CommssionType;
+    private String ShopName;
+    private String video;
+    private String commissionTwo;
+    private String commissionDay;
+    private String coupon_start_fee;
 
     public String getID() {
         return ID;
@@ -173,6 +180,14 @@ public class CommEntity {
         this.ly = ly;
     }
 
+    public String getLongGoodsName() {
+        return LongGoodsName;
+    }
+
+    public void setLongGoodsName(String LongGoodsName) {
+        this.LongGoodsName = LongGoodsName;
+    }
+
     public String getMarketImage() {
         return MarketImage;
     }
@@ -227,5 +242,45 @@ public class CommEntity {
 
     public void setCommssionType(String CommssionType) {
         this.CommssionType = CommssionType;
+    }
+
+    public String getShopName() {
+        return ShopName;
+    }
+
+    public void setShopName(String ShopName) {
+        this.ShopName = ShopName;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getCommissionTwo() {
+        return commissionTwo;
+    }
+
+    public void setCommissionTwo(String commissionTwo) {
+        this.commissionTwo = commissionTwo;
+    }
+
+    public String getCommissionDay() {
+        return commissionDay;
+    }
+
+    public void setCommissionDay(String commissionDay) {
+        this.commissionDay = commissionDay;
+    }
+
+    public String getCoupon_start_fee() {
+        return coupon_start_fee;
+    }
+
+    public void setCoupon_start_fee(String coupon_start_fee) {
+        this.coupon_start_fee = coupon_start_fee;
     }
 }

@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity {
         fragments.add(new CommonFragment());
         fragments.add(new Fragment());
         fragments.add(new CartFragment());
+        //待添加功能——清理Glide 缓存
         fragments.add(new Fragment());
 
 

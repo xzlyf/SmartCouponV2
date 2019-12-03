@@ -61,7 +61,7 @@
             android:id="@+id/goods_quan"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_30"
-            android:background="@drawable/quan"
+            android:background="@drawable/svg_quan"
             android:gravity="center"
             android:text="领20元券"
             android:textColor="@color/white"

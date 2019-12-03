@@ -2,6 +2,7 @@ package com.xz.jlw2.activity.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
@@ -15,7 +16,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.orhanobut.logger.Logger;
 import com.xz.base.BaseFragment;
+import com.xz.base.OnItemClickListener;
 import com.xz.jlw2.R;
+import com.xz.jlw2.activity.DetailActivity;
 import com.xz.jlw2.activity.MainActivity;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.constant.Local;
@@ -55,7 +58,18 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         commonAdapter = new CommonAdapter(context);
         commonAdapter.setHandler(handler);
         commonAdapter.setMode(Local.MODE_CART);//切换至购物车模式
+        commonAdapter.setOnItemClickListener(new OnItemClickListener<CommEntity>() {
+            @Override
+            public void onItemClick(View view, int position, CommEntity model) {
+                mContext.startActivity(new Intent(mContext, DetailActivity.class)
+                        .putExtra("goodsid", model.getGoodsId()));
+            }
 
+            @Override
+            public void onItemLongClick(View view, int position, CommEntity model) {
+
+            }
+        });
         //获取购物车数据
         new ReadDataThread(context).start();
 
@@ -74,6 +88,7 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         commonRecycler.setAdapter(commonAdapter);
         commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
         commonRecycler.setItemViewCacheSize(20);
+
 
         swipeRefresh = rootView.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(this);

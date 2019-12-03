@@ -1,6 +1,7 @@
 package com.xz.jlw2.activity.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.squareup.okhttp.Request;
 import com.xz.base.BaseFragment;
 import com.xz.base.OnItemClickListener;
 import com.xz.jlw2.R;
+import com.xz.jlw2.activity.DetailActivity;
 import com.xz.jlw2.adapter.ClassifyAdapter;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.adapter.HotWordAdapter;
@@ -55,14 +57,15 @@ public class CommonFragment extends BaseFragment {
     private HotWordAdapter hotWordAdapter;
     private List<String> hotList = new ArrayList<>();
     private int page = 1;//默认商品页数
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Handler handler = new Handler(){
+        Handler handler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case Local.CODE_1:
                         //加载商品数据
                         netGetCommon(++page);
@@ -90,7 +93,8 @@ public class CommonFragment extends BaseFragment {
         commonAdapter.setOnItemClickListener(new OnItemClickListener<CommEntity>() {
             @Override
             public void onItemClick(View view, int position, CommEntity model) {
-                sToast("商品点击");
+                mContext.startActivity(new Intent(mContext, DetailActivity.class)
+                        .putExtra("goodsid", model.getGoodsId()));
             }
 
             @Override
