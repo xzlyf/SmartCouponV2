@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.orhanobut.logger.Logger;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    //购物车数据库表
     private static final String CREATE_CART = "create table cart (" +
             "id text," +
             "goodsid text," +

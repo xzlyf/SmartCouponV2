@@ -1,5 +1,6 @@
 package com.xz.jlw2.adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Handler;
@@ -27,6 +28,9 @@ import com.xz.jlw2.R;
 import com.xz.jlw2.activity.MainActivity;
 import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.entity.CommEntity;
+import com.xz.jlw2.sql.SqlUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +42,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
     //脚布局
     static final int TYPE_FOOTER = 1;
     private Handler handler;
+    private int mode = 0;//当前模式  -0首页模式 -994购物车模式
 
     public CommonAdapter(Context context) {
         super(context);
@@ -46,6 +51,18 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
 
     public void setHandler(Handler handler) {
         this.handler = handler;
+    }
+
+
+    /**
+     * 切换模式
+     * 0 -首页模式
+     * 994 -购物车模式
+     *
+     * @param mode
+     */
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     @Override
@@ -62,8 +79,16 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             viewHolder.goodsNew.setText(entity.getLastPrice() + "￥");
 
         } else if (holder instanceof FooterHolder) {
-            ((FooterHolder) holder).refreshTips.setText("加载更多...");
-            ((FooterHolder) holder).itemView.setEnabled(true);
+
+            switch (mode) {
+                case Local.MODE_CART:
+                    ((FooterHolder) holder).itemView.setVisibility(View.GONE);
+                    break;
+                case 0:
+                    ((FooterHolder) holder).refreshTips.setText("加载更多...");
+                    ((FooterHolder) holder).itemView.setEnabled(true);
+                    break;
+            }
 
         }
 
@@ -95,6 +120,46 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
 
     }
 
+    /**
+     * Add or Remove
+     * 收藏或移除操作
+     */
+    private void AOR(int position) {
+        CommEntity entity = mList.get(position);
+        switch (mode) {
+            case 0:
+                //收藏
+                ContentValues values = new ContentValues();
+                values.put("id", entity.getID());
+                values.put("goodsid", entity.getGoodsId());
+                values.put("goodsname", entity.getGoodsName());
+                values.put("goodslink", entity.getGoodsLink());
+                values.put("actlink", entity.getActLink());
+                values.put("imgurl", entity.getImgUrl());
+                values.put("actmoney", entity.getActMoney());
+                values.put("previos", entity.getGoodsPrice());
+                values.put("later", entity.getLastPrice());
+                long request = SqlUtil.insert(mContext, "cart", values);//插入数据
+                if (request == -1) {
+                    ToastUtil.Shows(mContext, "收藏失败");
+                } else {
+                    ToastUtil.Shows(mContext, "已加入购物车");
+                }
+                break;
+            case Local.MODE_CART:
+                //移除
+                SqlUtil.delete(mContext, "cart", "id = ?", new String[]{entity.getID()});
+                //刷新购物车
+                mList.remove(position);
+                notifyDataSetChanged();
+
+                break;
+        }
+
+
+    }
+
+
     private Animation showTranslateAnim;
     private Animation hideTranslateAnim;
 
@@ -102,6 +167,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
      * 展示动画
      */
     private void initAnim() {
+
         showTranslateAnim = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, -1,
                 Animation.RELATIVE_TO_PARENT, 0f,
@@ -117,7 +183,6 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
         hideTranslateAnim.setInterpolator(new AccelerateInterpolator());
         hideTranslateAnim.setDuration(300);
     }
-
 
     class ViewHolder extends BaseRecyclerViewHolder implements View.OnLongClickListener, View.OnClickListener {
         @BindView(R.id.main_pic)
@@ -144,21 +209,39 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             ButterKnife.bind(this, itemView);
             itemView.setOnLongClickListener(this);
             itemView.setOnClickListener(this);
-            item_1.setOnClickListener(this);
-            item_2.setOnClickListener(this);
-            item_3.setOnClickListener(this);
+            switch (mode) {
+                case 0:
+                    item_1.setOnClickListener(this);
+                    item_2.setOnClickListener(this);
+                    item_3.setOnClickListener(this);
+                    break;
+                case Local.MODE_CART:
+                    item_1.setText("移除");
+                    item_1.setOnClickListener(this);
+                    item_2.setVisibility(View.GONE);
+                    item_3.setVisibility(View.GONE);
+
+            }
         }
 
         @Override
         public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.item_1:
+                    AOR(getLayoutPosition());
+                    break;
+                case R.id.item_2:
+                    ToastUtil.Shows(mContext, "测试功能:" + ((TextView) v).getText());
+                    break;
+                case R.id.item_3:
+                    ToastUtil.Shows(mContext, "测试功能:" + ((TextView) v).getText());
+                    break;
+            }
             //动画
             if (lastViewHolder != null) {
                 hideMenu();
                 lastViewHolder = null;
-                return;
-            }
-            if (v instanceof TextView) {
-                ToastUtil.Shows(mContext, "测试功能:" + ((TextView) v).getText());
                 return;
             }
             if (mOnItemClickListener != null) {
@@ -207,9 +290,12 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
         public void onClick(View v) {
             refreshTips.setText("正在加载...");
             itemView.setEnabled(false);
-            Message message = new Message();
-            message.what = Local.CODE_1;
-            handler.sendMessage(message);
+
+            if (handler != null) {
+                Message message = handler.obtainMessage();
+                message.what = Local.CODE_1;
+                handler.sendMessage(message);
+            }
         }
     }
 

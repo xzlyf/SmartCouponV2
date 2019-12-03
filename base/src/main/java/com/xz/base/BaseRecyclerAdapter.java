@@ -23,7 +23,21 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         mInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * 追加数据
+     * @param list
+     */
     public void refresh(List<T> list) {
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 先清楚原先的集合再添加进去
+     * @param list
+     */
+    public void superRefresh(List<T> list) {
+        mList.clear();
         mList.addAll(list);
         notifyDataSetChanged();
     }

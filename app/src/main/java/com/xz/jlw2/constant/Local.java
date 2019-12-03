@@ -32,4 +32,8 @@ public class Local {
     public static final int CODE_2 = 998;//自定义功能1
     public static final int CODE_3 = 997;//自定义功能1
     public static final int CODE_4 = 996;//自定义功能1
+    public static final int CODE_5 = 995;//购物车列表
+    public static final int MODE_CART = 994;//购物车模式
+
+
 }

@@ -2,21 +2,59 @@ package com.xz.jlw2.activity.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.orhanobut.logger.Logger;
 import com.xz.base.BaseFragment;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.MainActivity;
+import com.xz.jlw2.adapter.CommonAdapter;
+import com.xz.jlw2.constant.Local;
+import com.xz.jlw2.entity.CommEntity;
 import com.xz.jlw2.sql.DatabaseHelper;
 import com.xz.jlw2.sql.SqlUtil;
+import com.xz.utils.SpacesItemDecorationVertical;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CartFragment extends BaseFragment {
+    private static final String TABLE_CART = "cart";//表名
+    private List<CommEntity> commList;
+    private CommonAdapter commonAdapter;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case Local.CODE_5:
+                    Logger.w("执行");
+                    commonAdapter.superRefresh(commList);
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        commonAdapter = new CommonAdapter(context);
+        commonAdapter.setHandler(handler);
+        commonAdapter.setMode(Local.MODE_CART);//切换至购物车模式
+
+        //获取购物车数据
+        new ReadDataThread(context).start();
+
     }
 
     @Override
@@ -26,37 +64,66 @@ public class CartFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
+        //商品列表
+        RecyclerView commonRecycler = rootView.findViewById(R.id.common_recycler);
+        commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        commonRecycler.setAdapter(commonAdapter);
+        commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
+        commonRecycler.setItemViewCacheSize(20);
 
     }
 
     @Override
     protected void initDate(Context mContext) {
-        //=============================增
-        ContentValues values = new ContentValues();
-        values.put("id", "906836");
-        values.put("goodsid", "GoodsId");
-        values.put("goodsname", "联想笔记本电脑通用键盘保护贴膜");
-        values.put("goodslink", "https://detail.tmall.com/item.htm?id=530483020458");
-        values.put("actlink", "https://uland.taobao.com/quan/detail?sellerId=2074630256&activityId=38ba9f89b2df4eac9b1d037951d2ef47");
-        values.put("imgurl", "https://img.alicdn.com/imgextra/i3/2074630256/TB24QnynpXXXXavXpXXXXXXXXXX_!!2074630256.jpg");
-        values.put("actmoney", "1");
-        values.put("previos", "6.8");
-        values.put("later", "5.8");
-        //SqlUtil.insert(mContext,"cart",values);//插入数据
 
 
-        //=============================改
-        ContentValues values1 = new ContentValues();
-        values.put("id", "666666");//需要更新的数据
-        //更新数据，更新goodsname为“联想笔记本电脑通用键盘保护贴膜”行的id中的数据
-        //SqlUtil.update(mContext, "cart", values, "goodsname = ?", new String[]{"联想笔记本电脑通用键盘保护贴膜"});
+    }
+
+    /**
+     * 异步读取数据
+     */
+    class ReadDataThread extends Thread {
+        Context context;
+
+        ReadDataThread(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void run() {
+            //读取本地数据库数据
+            Cursor cursor = SqlUtil.queryAll(context, TABLE_CART);
+            //如果游标为空则返回false
+            if (cursor.moveToFirst()) {
+                commList = new ArrayList<>();
+                CommEntity entity;
+                do {
+                    entity = new CommEntity();
+                    entity.setID(cursor.getString(cursor.getColumnIndex("id")));
+                    entity.setGoodsId(cursor.getString(cursor.getColumnIndex("goodsid")));
+                    entity.setGoodsName(cursor.getString(cursor.getColumnIndex("goodsname")));
+                    entity.setGoodsLink(cursor.getString(cursor.getColumnIndex("goodslink")));
+                    entity.setActLink(cursor.getString(cursor.getColumnIndex("actlink")));
+                    entity.setImgUrl(cursor.getString(cursor.getColumnIndex("imgurl")));
+                    entity.setActMoney(cursor.getString(cursor.getColumnIndex("actmoney")));
+                    entity.setGoodsPrice(cursor.getString(cursor.getColumnIndex("previos")));
+                    entity.setLastPrice(cursor.getString(cursor.getColumnIndex("later")));
+                    commList.add(entity);
+
+                } while (cursor.moveToNext());
+
+                //反转数据
+                Collections.reverse(commList); //时间新的在前
+                //发送至handler显示数据
+                Message message = handler.obtainMessage();
+                message.what = Local.CODE_5;
+                handler.sendMessage(message);
+            }else{
+                Logger.w("购物车空");
+            }
+            cursor.close();
 
 
-        //=============================删
-        //删除id等于666666的行
-        //SqlUtil.delete(mContext,"cart","id=?",new String[]{"666666"});
-
-
-
+        }
     }
 }

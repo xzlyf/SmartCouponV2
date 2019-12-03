@@ -71,6 +71,7 @@ public class CommonFragment extends BaseFragment {
             }
         };
         commonAdapter = new CommonAdapter(mContext);
+        commonAdapter.setHandler(handler);
         classifyAdapter = new ClassifyAdapter(mContext);
         hotWordAdapter = new HotWordAdapter(mContext);
         classifyAdapter.setOnItemClickListener(new OnItemClickListener<ClassifyEntity>() {
@@ -98,7 +99,6 @@ public class CommonFragment extends BaseFragment {
 
             }
         });
-        commonAdapter.setHandler(handler);
 
 
 
