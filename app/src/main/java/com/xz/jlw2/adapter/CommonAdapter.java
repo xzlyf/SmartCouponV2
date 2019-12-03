@@ -144,7 +144,9 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
                     ToastUtil.Shows(mContext, "收藏失败");
                 } else {
                     ToastUtil.Shows(mContext, "已加入购物车");
+                    Local.cartChange = true;
                 }
+
                 break;
             case Local.MODE_CART:
                 //移除

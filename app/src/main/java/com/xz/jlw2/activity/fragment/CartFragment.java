@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.orhanobut.logger.Logger;
 import com.xz.base.BaseFragment;
@@ -27,10 +28,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CartFragment extends BaseFragment {
+public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TABLE_CART = "cart";//表名
     private List<CommEntity> commList;
     private CommonAdapter commonAdapter;
+    private SwipeRefreshLayout swipeRefresh;
 
     private Handler handler = new Handler() {
         @Override
@@ -38,8 +40,10 @@ public class CartFragment extends BaseFragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case Local.CODE_5:
-                    Logger.w("执行");
                     commonAdapter.superRefresh(commList);
+                    if (swipeRefresh != null) {
+                        swipeRefresh.setRefreshing(false);
+                    }
                     break;
             }
         }
@@ -71,13 +75,32 @@ public class CartFragment extends BaseFragment {
         commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
         commonRecycler.setItemViewCacheSize(20);
 
+        swipeRefresh = rootView.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(this);
+
     }
 
     @Override
     protected void initDate(Context mContext) {
 
+        if (Local.cartChange) {
+            //购物车发生改变再次刷新
+            new ReadDataThread(mContext).start();
+            //还原标识
+            Local.cartChange = false;
+        }
 
     }
+
+    /**
+     * 下拉刷新回调
+     */
+    @Override
+    public void onRefresh() {
+        //刷新购物车
+        new ReadDataThread(mContext).start();
+    }
+
 
     /**
      * 异步读取数据
@@ -118,7 +141,7 @@ public class CartFragment extends BaseFragment {
                 Message message = handler.obtainMessage();
                 message.what = Local.CODE_5;
                 handler.sendMessage(message);
-            }else{
+            } else {
                 Logger.w("购物车空");
             }
             cursor.close();

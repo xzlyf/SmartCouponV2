@@ -8,21 +8,27 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:text="购物车"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/sp_16"
-            android:text="购物车"/>
+            android:textSize="@dimen/sp_16" />
     </FrameLayout>
-    <!--商品列表-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/common_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_8"
-        android:overScrollMode="never" />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--商品列表-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/common_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_8"
+            android:overScrollMode="never" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
