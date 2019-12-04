@@ -56,13 +56,13 @@ public class DiscoverAdapter extends BaseRecyclerAdapter<DiscoverEntity> {
             viewHolder.previousPrice.setText(entity.getGoodsPrice());
             viewHolder.previousPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             viewHolder.lastPrice.setText(entity.getLastPrice());
-            Glide.with(mContext).load(entity.getImgUrl()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.mainPic);
-            Glide.with(mContext).load(entity.getRealImg()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic1);
-            Glide.with(mContext).load(entity.getRealImg2()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic2);
-            Glide.with(mContext).load(entity.getRealImg3()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic3);
-            Glide.with(mContext).load(entity.getRealImg4()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic4);
-            Glide.with(mContext).load(entity.getRealImg5()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic5);
-            Glide.with(mContext).load(entity.getRealImg6()).thumbnail(0.3f).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic6);
+            Glide.with(mContext).load(entity.getImgUrl()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.mainPic);
+            Glide.with(mContext).load(entity.getRealImg()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic1);
+            Glide.with(mContext).load(entity.getRealImg2()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic2);
+            Glide.with(mContext).load(entity.getRealImg3()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic3);
+            Glide.with(mContext).load(entity.getRealImg4()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic4);
+            Glide.with(mContext).load(entity.getRealImg5()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic5);
+            Glide.with(mContext).load(entity.getRealImg6()).thumbnail(0.3f).placeholder(R.drawable.bg_loading_2).error(R.drawable.bg_lose).diskCacheStrategy(DiskCacheStrategy.NONE).into(viewHolder.pic6);
         } else if (holder instanceof FooterHolder) {
 
             if (mList.size() > 1) {

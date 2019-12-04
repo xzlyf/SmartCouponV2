@@ -28,7 +28,7 @@
             android:ellipsize="end"
             android:lines="2"
             android:maxEms="12"
-            android:text="联想笔记本电脑通用键盘是的阿斯顿3333333333333保护贴膜祖传贴膜"
+            android:text="商品标题"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sp_14"
             app:layout_constraintLeft_toRightOf="@+id/main_pic"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="35￥"
+            android:text="旧价"
             app:layout_constraintLeft_toRightOf="@+id/main_pic"
             app:layout_constraintTop_toBottomOf="@id/goods_title" />
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="35￥"
+            android:text="现价"
             android:textColor="@color/red"
             android:textSize="@dimen/sp_16"
             app:layout_constraintLeft_toRightOf="@+id/main_pic"

@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/e" />
+    <item
+        android:bottom="50dp"
+        android:drawable="@drawable/svg_loading"
+        android:gravity="center"
+        android:left="@dimen/dp_50"
+        android:right="50dp"
+        android:top="50dp" />
+</layer-list>
