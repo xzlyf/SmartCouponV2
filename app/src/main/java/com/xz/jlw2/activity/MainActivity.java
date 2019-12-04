@@ -17,6 +17,7 @@ import com.xz.base.BaseActivity;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.fragment.CartFragment;
 import com.xz.jlw2.activity.fragment.CommonFragment;
+import com.xz.jlw2.activity.fragment.DiscoverFragment;
 import com.xz.jlw2.adapter.TitleFragmentPagerAdapter;
 import com.xz.jlw2.custom.SlideViewPage;
 
@@ -70,7 +71,7 @@ public class MainActivity extends BaseActivity {
         List<Fragment> fragments = new ArrayList<>();
         //加入布局
         fragments.add(new CommonFragment());
-        fragments.add(new Fragment());
+        fragments.add(new DiscoverFragment());
         fragments.add(new CartFragment());
         //待添加功能——清理Glide 缓存
         fragments.add(new Fragment());

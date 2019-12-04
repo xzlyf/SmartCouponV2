@@ -6,26 +6,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
-public class SqlUtil {
+public class SqlManager {
 
-    private static final String TAG = "SqlUtil.class";
+    private static final String TAG = "SqlManager.class";
     private static final String DB_NAME = "user.db";//数据库名称
     private static final int DB_VERSION = 1;//数据版本
-    private static SqlUtil mInstance;
+    private static SqlManager mInstance;
     private static SQLiteDatabase db_write;
     private static SQLiteDatabase db_read;
 
-    private SqlUtil(Context context) {
+    private SqlManager(Context context) {
         DatabaseHelper dbHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
         db_write = dbHelper.getWritableDatabase();
         db_read = dbHelper.getReadableDatabase();
     }
 
-    private static SqlUtil getInstance(Context context) {
+    private static SqlManager getInstance(Context context) {
         if (mInstance == null) {
-            synchronized (SqlUtil.class) {
+            synchronized (SqlManager.class) {
                 if (mInstance == null) {
-                    mInstance = new SqlUtil(context);
+                    mInstance = new SqlManager(context);
                 }
             }
 
@@ -118,23 +118,23 @@ public class SqlUtil {
         values.put("actmoney", "1");
         values.put("previos", "6.8");
         values.put("later", "5.8");
-        SqlUtil.insert(mContext,"cart",values);//插入数据
+        SqlManager.insert(mContext,"cart",values);//插入数据
 
 
         //=============================改
         ContentValues values1 = new ContentValues();
         values.put("id", "666666");//需要更新的数据
         //更新数据，更新goodsname为“联想笔记本电脑通用键盘保护贴膜”行的id中的数据
-        SqlUtil.update(mContext, "cart", values, "goodsname = ?", new String[]{"联想笔记本电脑通用键盘保护贴膜"});
+        SqlManager.update(mContext, "cart", values, "goodsname = ?", new String[]{"联想笔记本电脑通用键盘保护贴膜"});
 
 
         //=============================删
         //删除id等于666666的行
-        SqlUtil.delete(mContext,"cart","id=?",new String[]{"666666"});
+        SqlManager.delete(mContext,"cart","id=?",new String[]{"666666"});
 
 
         //=============================查
-        Cursor cursor = SqlUtil.queryAll(mContext, "cart");
+        Cursor cursor = SqlManager.queryAll(mContext, "cart");
         //如果游标为空则返回false
         if (cursor.moveToFirst()) {
             do {

@@ -61,7 +61,6 @@ public class ClassifyAdapter extends BaseRecyclerAdapter<ClassifyEntity> {
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
             view.setOnTouchListener(this);
         }
 

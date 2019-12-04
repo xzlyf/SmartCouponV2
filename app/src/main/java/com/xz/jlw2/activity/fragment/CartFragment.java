@@ -1,13 +1,13 @@
 package com.xz.jlw2.activity.fragment;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,12 +19,10 @@ import com.xz.base.BaseFragment;
 import com.xz.base.OnItemClickListener;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.DetailActivity;
-import com.xz.jlw2.activity.MainActivity;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.entity.CommEntity;
-import com.xz.jlw2.sql.DatabaseHelper;
-import com.xz.jlw2.sql.SqlUtil;
+import com.xz.jlw2.sql.SqlManager;
 import com.xz.utils.SpacesItemDecorationVertical;
 
 import java.util.ArrayList;
@@ -36,6 +34,8 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private List<CommEntity> commList;
     private CommonAdapter commonAdapter;
     private SwipeRefreshLayout swipeRefresh;
+    private long lastRefreshTime = 0;//上次刷新时间
+    private int time = 3000;//刷新时间限制
 
     private Handler handler = new Handler() {
         @Override
@@ -82,6 +82,9 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initView(View rootView) {
+        TextView tvTitle = rootView.findViewById(R.id.tv_title);
+        tvTitle.setText("购物车");
+
         //商品列表
         RecyclerView commonRecycler = rootView.findViewById(R.id.common_recycler);
         commonRecycler.setLayoutManager(new LinearLayoutManager(mContext));
@@ -97,21 +100,28 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initDate(Context mContext) {
-
+        //每次回到页面查看是否需要刷新
         if (Local.cartChange) {
             //购物车发生改变再次刷新
             new ReadDataThread(mContext).start();
             //还原标识
             Local.cartChange = false;
         }
-
     }
+
 
     /**
      * 下拉刷新回调
      */
     @Override
     public void onRefresh() {
+        long now = System.currentTimeMillis();
+        if (now - lastRefreshTime < time) {
+            sToast("别急别急~");
+            swipeRefresh.setRefreshing(false);
+            return;
+        }
+        lastRefreshTime = now;
         //刷新购物车
         new ReadDataThread(mContext).start();
     }
@@ -130,7 +140,7 @@ public class CartFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         @Override
         public void run() {
             //读取本地数据库数据
-            Cursor cursor = SqlUtil.queryAll(context, TABLE_CART);
+            Cursor cursor = SqlManager.queryAll(context, TABLE_CART);
             //如果游标为空则返回false
             if (cursor.moveToFirst()) {
                 commList = new ArrayList<>();

@@ -10,10 +10,10 @@
         android:background="@color/white">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="购物车"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sp_16" />
     </FrameLayout>
@@ -21,13 +21,15 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+
         android:layout_height="wrap_content">
         <!--商品列表-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/common_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_8"
             android:overScrollMode="never" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

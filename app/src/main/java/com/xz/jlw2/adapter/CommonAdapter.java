@@ -5,14 +5,12 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,27 +18,22 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.orhanobut.logger.Logger;
 import com.xz.base.BaseRecyclerAdapter;
 import com.xz.base.BaseRecyclerViewHolder;
 import com.xz.base.utils.ToastUtil;
 import com.xz.jlw2.R;
-import com.xz.jlw2.activity.MainActivity;
 import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.entity.CommEntity;
-import com.xz.jlw2.sql.SqlUtil;
-
-import java.util.List;
+import com.xz.jlw2.sql.SqlManager;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
     private ViewHolder lastViewHolder;
     //普通布局的type
-    static final int TYPE_ITEM = 0;
+    private static final int TYPE_ITEM = 0;
     //脚布局
-    static final int TYPE_FOOTER = 1;
+    private static final int TYPE_FOOTER = 1;
     private Handler handler;
     private int mode = 0;//当前模式  -0首页模式 -994购物车模式
 
@@ -145,7 +138,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
                 values.put("actmoney", entity.getActMoney());
                 values.put("previos", entity.getGoodsPrice());
                 values.put("later", entity.getLastPrice());
-                long request = SqlUtil.insert(mContext, "cart", values);//插入数据
+                long request = SqlManager.insert(mContext, "cart", values);//插入数据
                 if (request == -1) {
                     ToastUtil.Shows(mContext, "收藏失败");
                 } else {
@@ -156,7 +149,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
                 break;
             case Local.MODE_CART:
                 //移除
-                SqlUtil.delete(mContext, "cart", "id = ?", new String[]{entity.getID()});
+                SqlManager.delete(mContext, "cart", "id = ?", new String[]{entity.getID()});
                 //刷新购物车
                 mList.remove(position);
                 notifyDataSetChanged();
@@ -214,7 +207,6 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             itemView.setOnLongClickListener(this);
             itemView.setOnClickListener(this);
             switch (mode) {
@@ -289,7 +281,6 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
 
         FooterHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             // 上拉刷新点击事件
             itemView.setOnClickListener(this);
         }

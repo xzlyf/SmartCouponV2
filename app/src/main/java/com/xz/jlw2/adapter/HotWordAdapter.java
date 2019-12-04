@@ -35,7 +35,6 @@ public class HotWordAdapter extends BaseRecyclerAdapter<String> {
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
         }
     }
 }
