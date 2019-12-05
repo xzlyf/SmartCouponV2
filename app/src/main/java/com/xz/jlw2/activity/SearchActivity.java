@@ -23,6 +23,7 @@ import com.xz.jlw2.entity.CommEntity;
 import com.xz.jlw2.utils.SignMD5Util;
 import com.xz.utils.SpacesItemDecorationVertical;
 import com.xz.utils.network.OkHttpClientManager;
+import com.xz.widget.utils.KeyBoardUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,6 +90,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
         commonAdapter = new CommonAdapter(mContext);
         commonAdapter.setHandler(handler);
         commonAdapter.setMode(Local.MODE_SEARCH);
@@ -109,6 +111,13 @@ public class SearchActivity extends BaseActivity {
 
             }
         });
+
+        String word = getIntent().getStringExtra("word");
+        if (word != null) {
+            etSearch.setText(word);
+            netGet(word);
+
+        }
 
     }
 
@@ -144,7 +153,6 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 disLoading();
-
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getString("code").equals("0")) {

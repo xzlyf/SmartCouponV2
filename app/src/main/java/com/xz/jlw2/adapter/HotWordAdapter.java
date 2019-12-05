@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.xz.base.BaseRecyclerAdapter;
 import com.xz.base.BaseRecyclerViewHolder;
 import com.xz.jlw2.R;
@@ -29,12 +30,21 @@ public class HotWordAdapter extends BaseRecyclerAdapter<String> {
         return new ViewHolder(mInflater.inflate(R.layout.item_hot_word, parent, false));
     }
 
-    class ViewHolder extends BaseRecyclerViewHolder {
+    class ViewHolder extends BaseRecyclerViewHolder implements View.OnClickListener {
         @BindView(R.id.hot_text)
         TextView hotText;
 
         ViewHolder(View view) {
             super(view);
+            hotText.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Logger.w("执行");
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(v, getLayoutPosition(), mList.get(getLayoutPosition()));
+            }
         }
     }
 }

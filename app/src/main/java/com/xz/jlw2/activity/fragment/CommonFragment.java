@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CommonFragment extends BaseFragment implements View.OnClickListener {
+public class CommonFragment extends BaseFragment {
 
     private List<String> banner_path = new ArrayList<>();
     private List<String> banner_title = new ArrayList<>();
@@ -81,34 +78,9 @@ public class CommonFragment extends BaseFragment implements View.OnClickListener
         commonAdapter.setHandler(handler);
         classifyAdapter = new ClassifyAdapter(mContext);
         hotWordAdapter = new HotWordAdapter(mContext);
-        classifyAdapter.setOnItemClickListener(new OnItemClickListener<ClassifyEntity>() {
-            @Override
-            public void onItemClick(View view, int position, ClassifyEntity model) {
-                sToast("测试功能:" + model.getName());
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position, ClassifyEntity model) {
-                sToast("长按测试功能:" + model.getName());
-
-            }
-        });
-
-        commonAdapter.setOnItemClickListener(new OnItemClickListener<CommEntity>() {
-            @Override
-            public void onItemClick(View view, int position, CommEntity model) {
-                mContext.startActivity(new Intent(mContext, DetailActivity.class)
-                        .putExtra("goodsid", model.getGoodsId()));
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position, CommEntity model) {
-                sToast("长按商品");
-
-            }
-        });
-
-
+        hotWordAdapter.setOnItemClickListener(hotwordListener);
+        classifyAdapter.setOnItemClickListener(classlsListener);
+        commonAdapter.setOnItemClickListener(commomListener);
 
         /*
             只加载一次数据，除非退出否则不再刷新数据
@@ -169,20 +141,13 @@ public class CommonFragment extends BaseFragment implements View.OnClickListener
         commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
         commonRecycler.setItemViewCacheSize(20);
 
-        rootView.findViewById(R.id.et_search).setOnClickListener(this);
-        rootView.findViewById(R.id.submit).setOnClickListener(this);
+        rootView.findViewById(R.id.et_search).setOnClickListener(openSearchListener);
+        rootView.findViewById(R.id.submit).setOnClickListener(openSearchListener);
 
     }
 
     @Override
     protected void initDate(Context mContext) {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        startActivity(new Intent(mContext, SearchActivity.class));
 
     }
 
@@ -262,7 +227,6 @@ public class CommonFragment extends BaseFragment implements View.OnClickListener
         classifyAdapter.refresh(classifyList);
     }
 
-
     //自定义的图片加载器
     private class MyLoader extends ImageLoader {
         @Override
@@ -315,5 +279,58 @@ public class CommonFragment extends BaseFragment implements View.OnClickListener
 
         }, params, true);
     }
+
+
+    /**
+     * =============================监听事件回调=========================================
+     */
+    private View.OnClickListener openSearchListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(mContext, SearchActivity.class));
+        }
+    };
+
+    private OnItemClickListener<String> hotwordListener = new OnItemClickListener<String>() {
+        @Override
+        public void onItemClick(View view, int position, String model) {
+            Logger.w("执行B");
+
+            startActivity(new Intent(mContext, SearchActivity.class).putExtra("word", model));
+        }
+
+        @Override
+        public void onItemLongClick(View view, int position, String model) {
+
+        }
+
+    };
+
+    private OnItemClickListener<ClassifyEntity> classlsListener = new OnItemClickListener<ClassifyEntity>() {
+        @Override
+        public void onItemClick(View view, int position, ClassifyEntity model) {
+            sToast("测试功能:" + model.getName());
+        }
+
+        @Override
+        public void onItemLongClick(View view, int position, ClassifyEntity model) {
+            sToast("长按测试功能:" + model.getName());
+
+        }
+
+    };
+
+    private OnItemClickListener<CommEntity> commomListener = new OnItemClickListener<CommEntity>() {
+        @Override
+        public void onItemClick(View view, int position, CommEntity model) {
+            mContext.startActivity(new Intent(mContext, DetailActivity.class)
+                    .putExtra("goodsid", model.getGoodsId()));
+        }
+        @Override
+        public void onItemLongClick(View view, int position, CommEntity model) {
+
+        }
+
+    };
 
 }
