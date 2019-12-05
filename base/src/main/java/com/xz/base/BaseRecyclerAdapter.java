@@ -1,6 +1,7 @@
 package com.xz.base;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -16,6 +17,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     protected LayoutInflater mInflater;
     protected List<T> mList;
     protected OnItemClickListener<T> mOnItemClickListener;
+    private Handler mHandler;
 
     public BaseRecyclerAdapter(Context context) {
         mContext = context;
@@ -25,6 +27,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     /**
      * 追加数据
+     *
      * @param list
      */
     public void refresh(List<T> list) {
@@ -33,13 +36,22 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     /**
-     * 先清楚原先的集合再添加进去
+     * 先清除原先的集合再添加进去
+     *
      * @param list
      */
     public void superRefresh(List<T> list) {
         mList.clear();
         mList.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setHandler(Handler handler) {
+        mHandler = handler;
+    }
+
+    public Handler getHandler() {
+        return mHandler;
     }
 
     public void addItemTop(List<T> datas) {

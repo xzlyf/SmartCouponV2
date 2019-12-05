@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,6 +25,7 @@ import com.xz.base.BaseFragment;
 import com.xz.base.OnItemClickListener;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.DetailActivity;
+import com.xz.jlw2.activity.SearchActivity;
 import com.xz.jlw2.adapter.ClassifyAdapter;
 import com.xz.jlw2.adapter.CommonAdapter;
 import com.xz.jlw2.adapter.HotWordAdapter;
@@ -45,8 +48,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class CommonFragment extends BaseFragment {
+public class CommonFragment extends BaseFragment implements View.OnClickListener {
 
     private List<String> banner_path = new ArrayList<>();
     private List<String> banner_title = new ArrayList<>();
@@ -165,6 +169,9 @@ public class CommonFragment extends BaseFragment {
         commonRecycler.addItemDecoration(new SpacesItemDecorationVertical(10));
         commonRecycler.setItemViewCacheSize(20);
 
+        rootView.findViewById(R.id.et_search).setOnClickListener(this);
+        rootView.findViewById(R.id.submit).setOnClickListener(this);
+
     }
 
     @Override
@@ -172,11 +179,19 @@ public class CommonFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+        startActivity(new Intent(mContext, SearchActivity.class));
+
+    }
+
     /**
      * 获取网络搜索热词
      */
     private void netGetHotWord() {
-        Map<String, Object> params = new HashMap<>();
+        //注意大淘客接口验签需要使用TreeMap来装参数
+        Map<String, Object> params = new TreeMap<>();
         params.put("appKey", Local.APIKEY_DTK);
         params.put("version", Local.VERSION_DTK);
         params.put("sign", SignMD5Util.getSignStr(params, Local.APP_SECRET_DTK));
@@ -246,6 +261,7 @@ public class CommonFragment extends BaseFragment {
         classifyList.add(new ClassifyEntity("新品促销", R.drawable.ic_14));
         classifyAdapter.refresh(classifyList);
     }
+
 
     //自定义的图片加载器
     private class MyLoader extends ImageLoader {

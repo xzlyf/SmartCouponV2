@@ -112,7 +112,6 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 
-                Logger.w(response);
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getString("error").equals("0")) {
@@ -123,7 +122,7 @@ public class DetailActivity extends BaseActivity {
 
                         showDetail(entity);
                     } else {
-                        sToast("列表获取失败，请稍后重试0x001");
+                        sToast("列表获取失败，请稍后重试0x007");
                     }
 
                 } catch (JSONException e) {

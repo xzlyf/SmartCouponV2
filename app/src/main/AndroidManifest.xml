@@ -15,8 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:launchMode="singleTask"
+            android:name=".activity.SearchActivity"
+            android:theme="@style/NoTitle" />
+        <activity
+            android:launchMode="singleTask"
             android:name=".activity.DetailActivity"
-            android:theme="@style/detail_activity"></activity>
+            android:theme="@style/detail_activity" />
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/NoTitle">

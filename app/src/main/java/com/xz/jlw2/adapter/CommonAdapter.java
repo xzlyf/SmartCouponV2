@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.orhanobut.logger.Logger;
 import com.xz.base.BaseRecyclerAdapter;
 import com.xz.base.BaseRecyclerViewHolder;
 import com.xz.base.utils.ToastUtil;
@@ -35,13 +36,14 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
     //脚布局
     private static final int TYPE_FOOTER = 1;
     private Handler handler;
-    private int mode = 0;//当前模式  -0首页模式 -994购物车模式
+    private int mode = 0;//当前模式  -0首页模式 -994购物车模式 -993搜索模式
 
     public CommonAdapter(Context context) {
         super(context);
         initAnim();
     }
 
+    @Override
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
@@ -66,7 +68,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             //加载主图
             Glide.with(mContext)
                     .load(entity.getImgUrl())
-                    .override(100,100)
+                    .override(100, 100)
                     .thumbnail(0.1f)//缩略图
                     .into(viewHolder.mainPic);
             viewHolder.goodsQuan.setText("领" + entity.getActMoney() + "元券");
@@ -76,15 +78,30 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             viewHolder.goodsNew.setText(entity.getLastPrice() + "￥");
 
         } else if (holder instanceof FooterHolder) {
+            FooterHolder footerHolder = (FooterHolder) holder;
 
             switch (mode) {
                 case Local.MODE_CART:
-                    ((FooterHolder) holder).itemView.setVisibility(View.GONE);
+                    footerHolder.itemView.setVisibility(View.GONE);
+                    break;
+                case Local.MODE_SEARCH:
+                    if (mList.size() == 0) {
+                        footerHolder.refreshTips.setText("");
+                        footerHolder.itemView.setEnabled(false);
+                    }
+                    if (mList.size() > 1) {
+                        footerHolder.itemView.setEnabled(true);
+                        footerHolder.refreshTips.setText("加载更多...");
+                    }
                     break;
                 case 0:
                     if (mList.size() > 1) {
-                        ((FooterHolder) holder).refreshTips.setText("加载更多...");
-                        ((FooterHolder) holder).itemView.setEnabled(true);
+                        footerHolder.refreshTips.setText("加载更多...");
+                        footerHolder.itemView.setEnabled(true);
+                    }
+                    if (mList.size() == 0) {
+                        footerHolder.refreshTips.setText("暂无更多");
+                        footerHolder.itemView.setEnabled(true);
                     }
                     break;
             }
@@ -126,6 +143,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
     private void AOR(int position) {
         CommEntity entity = mList.get(position);
         switch (mode) {
+            case Local.MODE_SEARCH:
             case 0:
                 //收藏
                 ContentValues values = new ContentValues();
@@ -210,6 +228,7 @@ public class CommonAdapter extends BaseRecyclerAdapter<CommEntity> {
             itemView.setOnLongClickListener(this);
             itemView.setOnClickListener(this);
             switch (mode) {
+                case Local.MODE_SEARCH:
                 case 0:
                     item_1.setOnClickListener(this);
                     item_2.setOnClickListener(this);

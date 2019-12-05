@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     protected final String TAG = this.getClass().getSimpleName();
 
-    private Activity mContext;
+    protected Activity mContext;
     private XzLoadingDialog xzLoadingDialog;
     private XzTipsDialog xzTipsDialog;
 
