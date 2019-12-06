@@ -19,6 +19,7 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:overScrollMode="never"
         app:tabBackground="@drawable/btn_tab"
         app:tabIndicatorHeight="0dp" />
 

@@ -14,13 +14,14 @@
         android:roundIcon="@drawable/launcher_rou"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.StartActivity"></activity>
         <activity
-            android:launchMode="singleTask"
             android:name=".activity.SearchActivity"
+            android:launchMode="singleTask"
             android:theme="@style/NoTitle" />
         <activity
-            android:launchMode="singleTask"
             android:name=".activity.DetailActivity"
+            android:launchMode="singleTask"
             android:theme="@style/detail_activity" />
         <activity
             android:name=".activity.MainActivity"

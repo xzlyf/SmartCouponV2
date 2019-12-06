@@ -203,8 +203,16 @@ public class CommonFragment extends BaseFragment {
         banner_title.add("黑色星期五促销");
         banner_title.add("1212购物狂欢");
         banner_title.add("圣诞节促销");
+
     }
 
+    //自定义的图片加载器
+    private class MyLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            Glide.with(context).load((String) path).into(imageView);
+        }
+    }
 
     /**
      * 获取分类图标及名称
@@ -225,14 +233,6 @@ public class CommonFragment extends BaseFragment {
         classifyList.add(new ClassifyEntity("电影票", R.drawable.ic_13));
         classifyList.add(new ClassifyEntity("新品促销", R.drawable.ic_14));
         classifyAdapter.refresh(classifyList);
-    }
-
-    //自定义的图片加载器
-    private class MyLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load((String) path).into(imageView);
-        }
     }
 
     /**
@@ -280,7 +280,6 @@ public class CommonFragment extends BaseFragment {
         }, params, true);
     }
 
-
     /**
      * =============================监听事件回调=========================================
      */
@@ -326,6 +325,7 @@ public class CommonFragment extends BaseFragment {
             mContext.startActivity(new Intent(mContext, DetailActivity.class)
                     .putExtra("goodsid", model.getGoodsId()));
         }
+
         @Override
         public void onItemLongClick(View view, int position, CommEntity model) {
 

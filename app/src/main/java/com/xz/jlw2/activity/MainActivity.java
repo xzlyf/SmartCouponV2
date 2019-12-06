@@ -1,31 +1,32 @@
 package com.xz.jlw2.activity;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+import com.squareup.okhttp.Request;
 import com.xz.base.BaseActivity;
 import com.xz.jlw2.R;
 import com.xz.jlw2.activity.fragment.CartFragment;
 import com.xz.jlw2.activity.fragment.CommonFragment;
 import com.xz.jlw2.activity.fragment.DiscoverFragment;
 import com.xz.jlw2.adapter.TitleFragmentPagerAdapter;
+import com.xz.jlw2.constant.Local;
 import com.xz.jlw2.custom.SlideViewPage;
+import com.xz.jlw2.entity.DailyStringEntity;
+import com.xz.utils.CommonUtil;
+import com.xz.utils.network.OkHttpClientManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
     private String[] titles = new String[]{
@@ -60,7 +61,66 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        //初始化缓存目录
+        Local.cacheDir = CommonUtil.getDiskCachePath(mContext);
+
+
         initTab();
+        //sayHello();
+    }
+
+    private void sayHello() {
+        Map<String, Object> params = new HashMap<>();
+        OkHttpClientManager.getAsyn(mContext, Local.JINSHAN_DAYLIS, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+                Logger.e("每日一句获取失败:" + request.url());
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Gson gson = new Gson();
+
+
+                    downloadVideo(gson.fromJson(obj.toString(), DailyStringEntity.class));
+
+                } catch (JSONException e) {
+                    Logger.e("每日一句解析出了问题：" + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+        }, params, false);
+
+    }
+
+    /**
+     * 下载音频
+     *
+     * @param fromJson
+     */
+    private void downloadVideo(DailyStringEntity fromJson) {
+
+        OkHttpClientManager.downloadAsyn(fromJson.getTts(), Local.cacheDir, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+                Logger.e("每日一句音频下载失败:" + request.url() );
+                e.printStackTrace();
+
+            }
+
+            @Override
+            public void onResponse(String response) {
+                Logger.w(response);
+                //存储下载音频本地地址
+                fromJson.setLocalTtspath(response);
+
+            }
+
+        });
     }
 
     /**

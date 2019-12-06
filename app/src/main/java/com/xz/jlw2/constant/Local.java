@@ -1,6 +1,10 @@
 package com.xz.jlw2.constant;
 
 public class Local {
+
+    public static  String cacheDir;//缓存目录
+
+
     //选单网key
     public static final String APIKEY = "hcntgu1k3i";
     public static final String BASE_URL = "http://api.xuandan.com/DataApi/";
@@ -21,13 +25,18 @@ public class Local {
     //大淘客key
     public static final String APIKEY_DTK = "5d24967e3c4d6";//apikey
     public static final String VERSION_DTK = "v1.0.1";//接口版本
-    public static final String VERSION_DTK_SEARCH = "v1.2.1";//接口版本
+    public static final String VERSION_DTK_SEARCH = "v1.2.1";//搜索
     public static final String APP_SECRET_DTK = "e25f590cc656794c86f7da47ea1ba545";//sign
     //大淘客接口
     public static final String HOTWORD = "https://openapi.dataoke.com/api/category/get-top100";//热词排行
     public static final String SEARCH = "https://openapi.dataoke.com/api/goods/list-super-goods";//超级搜索
 
     public static boolean cartChange = false;//购物车发生改变标识
+
+
+    //金山每日一句api
+    public static final String JINSHAN_DAYLIS = "http://open.iciba.com/dsapi/?file=json";
+
 
     //handler数值
     public static final int CODE_1 = 999;//上拉加载
