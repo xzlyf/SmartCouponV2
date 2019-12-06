@@ -66,62 +66,8 @@ public class MainActivity extends BaseActivity {
 
 
         initTab();
-        //sayHello();
     }
 
-    private void sayHello() {
-        Map<String, Object> params = new HashMap<>();
-        OkHttpClientManager.getAsyn(mContext, Local.JINSHAN_DAYLIS, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                Logger.e("每日一句获取失败:" + request.url());
-            }
-
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    Gson gson = new Gson();
-
-
-                    downloadVideo(gson.fromJson(obj.toString(), DailyStringEntity.class));
-
-                } catch (JSONException e) {
-                    Logger.e("每日一句解析出了问题：" + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-        }, params, false);
-
-    }
-
-    /**
-     * 下载音频
-     *
-     * @param fromJson
-     */
-    private void downloadVideo(DailyStringEntity fromJson) {
-
-        OkHttpClientManager.downloadAsyn(fromJson.getTts(), Local.cacheDir, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                Logger.e("每日一句音频下载失败:" + request.url() );
-                e.printStackTrace();
-
-            }
-
-            @Override
-            public void onResponse(String response) {
-                Logger.w(response);
-                //存储下载音频本地地址
-                fromJson.setLocalTtspath(response);
-
-            }
-
-        });
-    }
 
     /**
      * 初始化tab

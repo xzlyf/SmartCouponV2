@@ -38,8 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //申请权限
-        initPermission();
+
         setContentView(getLayoutResource());
         ButterKnife.bind(this);
         mContext = this;
@@ -52,7 +51,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
             }
         }
-        initData();
+
+        //申请权限
+        initPermission();
+
 
     }
 
@@ -108,10 +110,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                             .create();
 
                     dialog.show();
+                }else {
+                    initData();
                 }
 
+            } else {
+                initData();
             }
 
+        } else {
+            initData();
         }
     }
 
@@ -132,9 +140,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                     //成功
                 } else {
                     //失败
-
                 }
             }
+            //给不给权限都给进了
+            initData();
+
         }
 
 

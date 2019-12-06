@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/dp_5">
 
-    <View
+    <ImageView
+        android:id="@+id/main_pic"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_1"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="捡漏王"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/sp_18"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginBottom="@dimen/dp_10"
         android:background="#292929"
         app:layout_constraintBottom_toTopOf="@+id/note"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -16,7 +45,7 @@
         android:id="@+id/note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="生活中最大的幸福是坚信有人爱我们。"
+        android:text="正在加载，稍安勿躁...。"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/dp_12"
         app:layout_constraintBottom_toTopOf="@+id/content"
@@ -27,7 +56,8 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The supreme happiness of life is the conviction that we are loved"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:text="Hold Your Horses"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="parent"

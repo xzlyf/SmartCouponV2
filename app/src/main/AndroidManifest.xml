@@ -14,7 +14,20 @@
         android:roundIcon="@drawable/launcher_rou"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.StartActivity"></activity>
+        <activity
+            android:name=".activity.StartActivity"
+            android:theme="@style/detail_activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/NoTitle">
+
+        </activity>
         <activity
             android:name=".activity.SearchActivity"
             android:launchMode="singleTask"
@@ -23,15 +36,7 @@
             android:name=".activity.DetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/detail_activity" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/NoTitle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
