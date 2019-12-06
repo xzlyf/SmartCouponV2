@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
@@ -30,11 +28,13 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class StartActivity extends BaseActivity {
+public class LoadActivity extends BaseActivity {
 
-    private int time = 3000;
 
+    @BindView(R.id.skip_btn)
+    TextView skipBtn;
     @BindView(R.id.note)
     TextView note;
     @BindView(R.id.content)
@@ -42,12 +42,22 @@ public class StartActivity extends BaseActivity {
     @BindView(R.id.main_pic)
     ImageView mainPic;
 
+    private final int TIME = 5000;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
         }
     };
+
+    @OnClick(R.id.skip_btn)
+    public void skip() {
+        //移除所有延时任务
+        handler.removeMessages(0);
+        startActivity(new Intent(LoadActivity.this, MainActivity.class));
+        finish();
+
+    }
 
     @Override
     public boolean homeAsUpEnabled() {
@@ -56,7 +66,7 @@ public class StartActivity extends BaseActivity {
 
     @Override
     public int getLayoutResource() {
-        return R.layout.activity_start;
+        return R.layout.activity_load;
     }
 
     @Override
@@ -64,15 +74,16 @@ public class StartActivity extends BaseActivity {
 
         sayHello();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(StartActivity.this, MainActivity.class));
-                finish();
-            }
-        }, time);
 
     }
+
+    private Runnable skipActivity = new Runnable() {
+        @Override
+        public void run() {
+            startActivity(new Intent(LoadActivity.this, MainActivity.class));
+            finish();
+        }
+    };
 
     private void sayHello() {
 
@@ -86,11 +97,14 @@ public class StartActivity extends BaseActivity {
             String nowDate = TimeUtil.getSimMilliDate("yyyy-MM-dd", System.currentTimeMillis());
             //如果现在时间跟存储时间一致则显示本地的
             if (date.equals(nowDate)) {
-                showData(entity);
-                return;
+                //如果现在时间跟存储时间一致则不显示启动页直接进入主页
+                startActivity(new Intent(LoadActivity.this, MainActivity.class));
+                finish();
+            } else {
+                //如果不相同，则缓存今天的数据，n秒后自动关闭本页
+                handler.postDelayed(skipActivity, TIME);
             }
         }
-
 
         Map<String, Object> params = new HashMap<>();
         OkHttpClientManager.getAsyn(mContext, Local.JINSHAN_DAYLIS, new OkHttpClientManager.ResultCallback<String>() {
@@ -130,6 +144,5 @@ public class StartActivity extends BaseActivity {
         note.setText(fromJson.getNote());
 
     }
-
 
 }
